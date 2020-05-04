@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: ChangeNotifierProvider<Counter>(
-        builder: (_) => Counter(0),
+        create: (context) => Counter(),
         child: MyHomePage(),
       ),
     );
@@ -20,10 +20,7 @@ class MyApp extends StatelessWidget {
 }
 
 class Counter with ChangeNotifier {
-  int _value;
-
-  Counter(this._value);
-
+  int _value = 0;
   int get value => this._value;
 
   _increment() {
@@ -72,10 +69,13 @@ class WidgetNumText extends StatelessWidget {
   const WidgetNumText({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final counter = Provider.of<Counter>(context);
-    return Text(
-      '${counter.value}',
-      style: Theme.of(context).textTheme.display1,
+    return Consumer<Counter>(
+      builder: (context, counter, _) {
+        return Text(
+          '${counter.value}',
+          style: Theme.of(context).textTheme.headline,
+        );
+      },
     );
   }
 }
